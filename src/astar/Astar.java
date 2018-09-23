@@ -68,7 +68,11 @@ public class Astar {
 	
 	public void printPath(Node node) {
 		System.out.println("found it");
-		for(;node != null;node = node.parent) {
+		for(;node.parent != null;node = node.parent) {
+			node.parent.child = node;
+		}
+		
+		for(;node != null;node = node.child) {
 			System.out.print(Arrays.toString(node.person.now) +" " );
 			System.out.printf("%-2d",node.G);
 			node.showDiffToParent();
@@ -215,6 +219,7 @@ class Person {
 class Node implements Comparable<Node> {
 	public Person person;
 	public Node parent;
+	public Node child;
 	public int G; // G：乘船次数
     public int H; // H：河这边剩余的人数（离目标的距离）
 	
@@ -284,6 +289,6 @@ class Node implements Comparable<Node> {
 
 class MapInfo{
 	public static Node start = new Node(Person.people.clone()); 
-	public static Node end = new Node(new int[] {0,0,0,0,0,0,0});
 	public static int[] endList = {0,0,0,0,0,0,0};
+	public static Node end = new Node(endList.clone());
 }
